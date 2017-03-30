@@ -13,7 +13,7 @@ namespace BankKata.Test
             var clock = Substitute.For<IClock>();
             clock.Now().Returns(x => "01/04/2014", x => "02/04/2014", x => "10/04/2014");
 
-            var account = new AccountService(clock, console);
+            var account = new AccountService(clock, console) {Repository = new TransactionRepository()};
 
             account.Deposit(1000);
             account.Withdraw(100);

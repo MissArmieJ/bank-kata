@@ -27,7 +27,7 @@ namespace BankKata.Test
         {
             _clock.Now().Returns(DepositDate);
 
-            var account = new AccountService(_repository, _clock, _console);
+            var account = new AccountService(_clock, _console) { Repository = _repository };
             account.Deposit(DepositAmount);
 
             _repository.Received().AddTransaction(DepositAmount, DepositDate);
@@ -38,7 +38,7 @@ namespace BankKata.Test
         {
             _clock.Now().Returns(WithdrawDate);
 
-            var account = new AccountService(_repository, _clock, _console);
+            var account = new AccountService(_clock, _console) { Repository = _repository };
             account.Withdraw(WithdrawAmount);
 
             _repository.Received().AddTransaction(-WithdrawAmount, WithdrawDate);
@@ -47,7 +47,7 @@ namespace BankKata.Test
         [Test]
         public void print_statement_when_no_transactions()
         {
-            var account = new AccountService(_repository, _clock, _console);
+            var account = new AccountService(_clock, _console) { Repository = _repository };
             account.PrintStatement();
 
             _console.Received().PrintLine("DATE | AMOUNT | BALANCE");
@@ -57,7 +57,8 @@ namespace BankKata.Test
         public void print_statement_with_transaction()
         {
             _clock.Now().Returns(DepositDate);
-            var account = new AccountService(_repository, _clock, _console);
+
+            var account = new AccountService(_clock, _console) { Repository = _repository };
             account.Deposit(DepositAmount);
 
             account.PrintStatement();
